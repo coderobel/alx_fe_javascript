@@ -4,6 +4,7 @@ const quote1 = {
 };
 const quotes = [quote1];
 function showRandomQuote(){
+  localStorage.getItem(quotes);
   const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
   const quoteDisplay = document.getElementById("quoteDisplay");
   quoteDisplay.innerHTML = `<p>${randomQuote.text}</p><small>${randomQuote.category}</small>`;
@@ -18,7 +19,7 @@ function createAddQuoteForm(){
     category: newCategory
   };
   quotes.push(quote);
-  localStorage.setItem(quotes, quote)
+  localStorage.setItem(quotes, quote);
   const quoteDisplay = document.getElementById("quoteDisplay");
   quoteDisplay.innerHTML = "";
 
