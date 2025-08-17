@@ -8,12 +8,12 @@ function showRandomQuote(){
   const quoteDisplay = document.getElementById("quoteDisplay");
   quoteDisplay.innerHTML = `<p>${randomQuote.text}</p><small>${randomQuote.category}</small>`;
 };
-function createAddQuoteForm(){
-  Quote = document.getElementById("newQuoteText");
-  Category = document.getElementById("newQuoteCategory");
-  newQuote = Quote.value.trim();
-  newCategory = Category.value.trim();
-  quote = {
+function AddQuote(){
+  const Quote = document.getElementById("newQuoteText");
+  const Category = document.getElementById("newQuoteCategory");
+  const newQuote = Quote.value.trim();
+  const newCategory = Category.value.trim();
+  const quote = {
     text: newQuote,
     category: newCategory
   };
@@ -25,7 +25,7 @@ function createAddQuoteForm(){
   quoteTextEL.textContent = quote.text;
 
   const categoryTextEL = document.createElement("small");
-  categoryEL.textContent = quote.category;
+  categoryTextEL.textContent = quote.category;
 
   quoteDisplay.appendChild(quoteTextEL);
   quoteDisplay.appendChild(categoryEL);
@@ -33,4 +33,6 @@ function createAddQuoteForm(){
 document.addEventListener("DOMContentLoaded", function (){
    const ShowNewQuoteButton = document.getElementById("newQuote");
    ShowNewQuoteButton.addEventListener("click", showRandomQuote);
+   const Add_Quote = document.getElementById("Add-Quote");
+   Add_Quote.addEventListener("click", AddQuote);
 });
