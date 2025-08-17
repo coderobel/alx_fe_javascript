@@ -4,10 +4,10 @@ const quote1 = {
 };
 const quotes = [quote1];
 function showRandomQuote(){
-  for(i=0;i < quotes.length;i++){
-    console.log(quotes[i]);
-  };
-};
+  const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+  const quote-display = document.getElementbyId("quoteDisplay");
+  quote-display.innerHTML = 
+}
 function createAddQuoteForm(){
   
 }
