@@ -6,7 +6,7 @@ const quotes = [quote1];
 function showRandomQuote(){
   const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
   const quote-display = document.getElementbyId("quoteDisplay");
-  quote-display.innerHTML = 
+  
 }
 function createAddQuoteForm(){
   
