@@ -18,6 +18,7 @@ function createAddQuoteForm(){
     category: newCategory
   };
   quotes.push(quote);
+  localStorage.setItem(quotes, quote)
   const quoteDisplay = document.getElementById("quoteDisplay");
   quoteDisplay.innerHTML = "";
 
