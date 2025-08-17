@@ -5,8 +5,8 @@ const quote1 = {
 const quotes = [quote1];
 function showRandomQuote(){
   const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-  const quote-display = document.getElementbyId("quoteDisplay");
-  
+  const quoteDisplay = document.getElementById("quoteDisplay");
+  quoteDisplay.innerHTML = `<p>${randomQuote.text}</p><small>${randomQuote.category}</small>`;
 }
 function createAddQuoteForm(){
   
