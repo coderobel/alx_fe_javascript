@@ -30,3 +30,7 @@ function createAddQuoteForm(){
   quoteDisplay.appendChild(quoteTextEL);
   quoteDisplay.appendChild(categoryEL);
 };
+document.addEventListener("DOMContentLoaded", function (){
+   const ShowNewQuoteButton = document.getElementById("newQuote");
+   ShowNewQuoteButton.addEventListener("click", showRandomQuote);
+});
