@@ -8,7 +8,7 @@ function showRandomQuote(){
   const quoteDisplay = document.getElementById("quoteDisplay");
   quoteDisplay.innerHTML = `<p>${randomQuote.text}</p><small>${randomQuote.category}</small>`;
 };
-function AddQuote(){
+function createAddQuoteForm(){
   const Quote = document.getElementById("newQuoteText");
   const Category = document.getElementById("newQuoteCategory");
   const newQuote = Quote.value.trim();
@@ -34,5 +34,5 @@ document.addEventListener("DOMContentLoaded", function (){
    const ShowNewQuoteButton = document.getElementById("newQuote");
    ShowNewQuoteButton.addEventListener("click", showRandomQuote);
    const Add_Quote = document.getElementById("Add-Quote");
-   Add_Quote.addEventListener("click", AddQuote);
+   Add_Quote.addEventListener("click", createAddQuoteForm);
 });
