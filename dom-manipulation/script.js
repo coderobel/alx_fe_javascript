@@ -6,6 +6,7 @@ const quotes = [quote1];
 function showRandomQuote(){
   localStorage.getItem(quotes);
   const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+  sessionStorage.setItem(quotes, randomQuote);
   const quoteDisplay = document.getElementById("quoteDisplay");
   quoteDisplay.innerHTML = `<p>${randomQuote.text}</p><small>${randomQuote.category}</small>`;
 };
