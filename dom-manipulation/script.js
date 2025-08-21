@@ -38,4 +38,5 @@ document.addEventListener("DOMContentLoaded", function (){
    ShowNewQuoteButton.addEventListener("click", showRandomQuote);
    const Add_Quote = document.getElementById("Add-Quote");
    Add_Quote.addEventListener("click", createAddQuoteForm);
+  
 });
