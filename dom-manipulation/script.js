@@ -76,6 +76,12 @@ function importFromJsonFile(event) {
   };
   reader.readAsText(file);
 }
+function populateCategories() {
+
+}
+function filterQuotes() {
+  
+}
 document.addEventListener("DOMContentLoaded", function (){
    const ShowNewQuoteButton = document.getElementById("newQuote");
    ShowNewQuoteButton.addEventListener("click", showRandomQuote);
