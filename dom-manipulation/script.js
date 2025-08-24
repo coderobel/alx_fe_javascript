@@ -77,10 +77,27 @@ function importFromJsonFile(event) {
   reader.readAsText(file);
 }
 function populateCategories() {
+  const categoryFilter = document.getElementById("categoryFilter");
 
+  categoryFilter.innerHTML = `<option value="all">All Categories</option>`;
+
+  const categories = [...new Set(quotes.map(q => q.category))];
+
+  categories.forEach(cat => {
+    const option = document.createElement("option");
+    option.value = cat;
+    option.textContent = cat;
+    categoryFilter.appendChild(option);
+  });
+
+  const savedCategory = localStorage.getItem("selectedCategory");
+  if (savedCategory) {
+    categoryFilter.value = savedCategory;
+    filterQuotes();
+  }
 }
 function filterQuotes() {
-  
+
 }
 document.addEventListener("DOMContentLoaded", function (){
    const ShowNewQuoteButton = document.getElementById("newQuote");
