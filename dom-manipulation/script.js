@@ -39,6 +39,43 @@ function createAddQuoteForm(){
   quoteDisplay.appendChild(quoteTextEL);
   quoteDisplay.appendChild(categoryTextEL);
 };
+function exportQuotes(){
+  const dataStr = JSON.stringify(quotes, null, 2);
+  const blob = new Blob([dataStr], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "quotes.json";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  URL.revokeObjectURL(url);
+};
+function importFromJsonFile(event) {
+  const file = event.target.files[0];
+  if (!file){
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const importedQuotes = JSON.parse(e.target.result);
+
+      if (Array.isArray(importedQuotes)) {
+          quotes.push(...importedQuotes);
+          localStorage.setItem("quotes", JSON.stringify(quotes));
+          alert("Quotes imported successfully!");
+      }else{
+        alert("Invalid JSON format.Must be an array of quotes.");
+      }
+    } catch (err) {
+      alert("Error reading file: " + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
 document.addEventListener("DOMContentLoaded", function (){
    const ShowNewQuoteButton = document.getElementById("newQuote");
    ShowNewQuoteButton.addEventListener("click", showRandomQuote);
