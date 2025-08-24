@@ -138,6 +138,82 @@ function loadQuotesFromStorage() {
     quotes.push(...saved);
   }
 }
+// --- CONFIG ---
+const MOCK_SERVER_URL = "https://jsonplaceholder.typicode.com/posts"; // example placeholder (adapt)
+const SYNC_INTERVAL_MS = 30_000; // poll every 30 seconds
+
+// --- Sync function ---
+async function syncWithServer() {
+  try {
+    // 1) Fetch server quotes (simulate: GET endpoint returning array of quotes)
+    const res = await fetch(MOCK_SERVER_URL);
+    if (!res.ok) throw new Error("Failed to fetch server data");
+    const serverData = await res.json(); // expected: [{ id, text, category, updatedAt }, ...]
+    
+    // If the mock endpoint doesn't return our shape, you'll adapt the mapping here.
+    // For now assume serverData is array of quote objects with id/updatedAt.
+
+    // 2) Build indexes for quick lookup
+    const localById = Object.fromEntries(quotes.map(q => [q.id, q]));
+    const serverById = Object.fromEntries(serverData.map(q => [q.id, q]));
+
+    // 3) Merge: for each server item, compare vs local
+    let changes = { added: 0, updated: 0 };
+    for (const sid in serverById) {
+      const sItem = serverById[sid];
+      const lItem = localById[sid];
+
+      if (!lItem) {
+        // server has a quote we don't — add it
+        quotes.push(sItem);
+        changes.added++;
+      } else if (lItem.updatedAt !== sItem.updatedAt || lItem.text !== sItem.text || lItem.category !== sItem.category) {
+        // conflict or update — resolve by timestamp (server wins if server is newer)
+        const serverTime = new Date(sItem.updatedAt).getTime();
+        const localTime = new Date(lItem.updatedAt).getTime();
+
+        if (serverTime > localTime) {
+          // server is newer -> replace local
+          Object.assign(lItem, sItem);
+          changes.updated++;
+        } else if (localTime > serverTime) {
+          // local is newer -> push local to server (optimistic attempt)
+          // optional: call pushQuoteToServer(lItem)
+        } else {
+          // same timestamp but different content -> server wins (or show conflict modal)
+          Object.assign(lItem, sItem);
+          changes.updated++;
+        }
+      }
+    }
+
+    // 4) Check for local items that server doesn't have (local-only)
+    for (const lid in localById) {
+      if (!serverById[lid]) {
+        // Option: push new local quotes to server
+        // await pushQuoteToServer(localById[lid]); // optional
+      }
+    }
+
+    if (changes.added || changes.updated) {
+      saveQuotes();
+      populateCategories();
+      renderQuotesForCurrentFilter();
+      showNotification(`Synced: +${changes.added} added, ${changes.updated} updated from server.`);
+    }
+  } catch (err) {
+    console.error("Sync failed:", err);
+    showNotification("Sync failed: " + err.message, true);
+  }
+}
+
+// start polling
+let syncInterval = null;
+function startSyncPolling() {
+  if (syncInterval) clearInterval(syncInterval);
+  syncInterval = setInterval(syncWithServer, SYNC_INTERVAL_MS);
+}
+
 document.addEventListener("DOMContentLoaded", function (){
    const ShowNewQuoteButton = document.getElementById("newQuote");
    ShowNewQuoteButton.addEventListener("click", showRandomQuote);
