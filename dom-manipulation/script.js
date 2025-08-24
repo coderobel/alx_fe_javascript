@@ -1,6 +1,8 @@
 const quote1 = {
+  id : generateId(),
   text: "I fear not an army of lions led by a sheep but an army of sheeps led by a lion",
-  category: "ancient history quotes"
+  category: "ancient history quotes",
+  updatedAt: new Date().toISOString()
 };
 const quotes = [quote1];
 function showRandomQuote(){
@@ -21,8 +23,10 @@ function createAddQuoteForm(){
   }
 
   const quote = {
+    id: generateId(),
     text: newQuote,
-    category: newCategory
+    category: newCategory,
+    updatedAt: new Date().toISOString()
   };
   quotes.push(quote);
   populateCategories();
@@ -120,6 +124,19 @@ function filterQuotes() {
     quoteDisplay.appendChild(quoteTextEL);
     quoteDisplay.appendChild(categoryTextEL);
   });
+}
+function generateId(){
+  return 'q_' + Date.now() + '_' + Math.floor(Math.random() * 10000)
+}
+functionsaveQuotes(){
+  localStorage.setItem("quotes", JSON.stringify(quotes));
+}
+function loadQuotesFromStorage() {
+  const saved = JSON.parse(localStorage.getItem("quotes") || "null")
+  if (Array.isArray(saved) && saved.length) { 
+    quotes.length = 0;
+    quotes.push(...saved);
+  }
 }
 document.addEventListener("DOMContentLoaded", function (){
    const ShowNewQuoteButton = document.getElementById("newQuote");
