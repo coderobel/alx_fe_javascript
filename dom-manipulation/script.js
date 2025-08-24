@@ -25,6 +25,7 @@ function createAddQuoteForm(){
     category: newCategory
   };
   quotes.push(quote);
+  populateCategories();
   localStorage.setItem("quotes", JSON.stringify(quotes));
   
   const quoteDisplay = document.getElementById("quoteDisplay");
@@ -97,7 +98,28 @@ function populateCategories() {
   }
 }
 function filterQuotes() {
+  const categoryFilter = document.getElementById("categoryFilter");
+  const selectedCategory = categoryFilter.value;
 
+  localStorage.setItem("selectedCategory", selectedCategory);
+
+  const quoteDisplay = document.getElementById("quoteDisplay");
+  quoteDisplay.innerHTML = "";
+
+  const filtered = selectedCategory === "all"
+  ? quotes
+  : quotes.filter(q => q.category === selectedCategory);
+
+  filtered.forEach(quote => {
+    const quoteTextEL = document.createElement("p");
+    quoteTextEL.textContent = quote.text;
+
+    const categoryTextEL = document.createElement("small");
+    categoryTextEL.textContent = quote.category;
+
+    quoteDisplay.appendChild(quoteTextEL);
+    quoteDisplay.appendChild(categoryTextEL);
+  });
 }
 document.addEventListener("DOMContentLoaded", function (){
    const ShowNewQuoteButton = document.getElementById("newQuote");
@@ -110,4 +132,5 @@ document.addEventListener("DOMContentLoaded", function (){
    if (savedQuotes) {
     quotes.push(...savedQuotes);
    }
+   populateCategories();
 });
